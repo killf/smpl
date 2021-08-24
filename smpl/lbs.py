@@ -31,7 +31,7 @@ def rigid_transformation(pose, joints, kintree_table):
     # 计算每个子节点相对 T-pose 时的位姿矩阵
     for i in range(24):
         R = Ts[i][:3, :3]
-        t = Ts[i][:3, 3] - R.dot(joints[i])  # 子节点相对T-pose的偏移 t
+        t = Ts[i][:3, 3] - R.dot(joints[i])  # 子节点相对T-pose的偏移
         Ts[i][:3, 3] = t
 
     return Ts
