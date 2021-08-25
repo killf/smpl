@@ -1,10 +1,23 @@
 import numpy as np
-import cv2
+
+
+def rodrigues_cv(x):
+    import cv2
+    return cv2.Rodrigues(x)[0]
+
+
+def rodrigues_np(r):
+    theta = np.linalg.norm(r)
+    x, y, z = r / theta
+    c, s = np.cos(theta), np.sin(theta)
+    return np.array([[x * x * (1 - c) + c, x * y * (1 - c) + z * s, x * z * (1 - c) - y * s],
+                     [x * y * (1 - c) - z * s, y * y * (1 - c) + c, y * z * (1 - c) + x * s],
+                     [x * z * (1 - c) + y * s, y * z * (1 - c) - x * s, z * z * (1 - c) + c]]).T
 
 
 def rodrigues(x):
     if x.ndim == 1:
-        return cv2.Rodrigues(x)[0]
+        return rodrigues_np(x)
     else:
         return np.stack([rodrigues(i) for i in x])
 
