@@ -22,14 +22,6 @@ def rodrigues(x):
         return np.stack([rodrigues(i) for i in x])
 
 
-def with_zeros(x):
-    return np.vstack((x, np.array([[0.0, 0.0, 0.0, 1.0]])))
-
-
-def pack(x):
-    return np.hstack([np.zeros((4, 3)), x.reshape((4, 1))])
-
-
 def batch_eye(n):
     return np.eye(n)[np.newaxis, ...]
 
