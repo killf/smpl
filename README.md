@@ -1,5 +1,5 @@
 # smpl
-基于numpy的smpl算法
+基于numpy的smpl算法。
 
 ```python
 import numpy as np
