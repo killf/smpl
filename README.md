@@ -16,3 +16,5 @@ write_obj("test.obj", vertices, model.faces)
 pcd = o3d.io.read_triangle_mesh("test.obj")
 o3d.visualization.draw_geometries([pcd])
 ```
+
+![body](body.jpg)
