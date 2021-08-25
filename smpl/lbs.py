@@ -4,9 +4,6 @@ from .utils import *
 
 
 def rigid_transformation(pose, joints, kintree_table):
-    id_to_col = {kintree_table[1, i]: i for i in range(kintree_table.shape[1])}
-    parent = {i: id_to_col[kintree_table[0, i]] for i in range(1, kintree_table.shape[1])}  # 关节点之间的父子级关系，0->父，1->子
-
     # 首先计算根结点 (0) 的世界坐标变换, 或者说是根结点相对世界坐标系的位姿
     T = np.zeros([4, 4])
     T[:3, :3] = rodrigues(pose[0])  # 轴角转换到旋转矩阵，相对世界坐标
@@ -24,9 +21,9 @@ def rigid_transformation(pose, joints, kintree_table):
         # 计算子节点相对父节点的旋转矩阵 R
         T[:3, :3] = rodrigues(pose[i])
         # 计算子节点相对父节点的偏移量 t
-        T[:3, 3] = joints[i] - joints[parent[i]]
+        T[:3, 3] = joints[i] - joints[kintree_table[i]]
         # 然后计算子节点相对世界坐标系的位姿
-        Ts[i] = np.matmul(Ts[parent[i]], T)  # 乘上其父节点的变换矩阵
+        Ts[i] = np.matmul(Ts[kintree_table[i]], T)  # 乘上其父节点的变换矩阵
 
     # 计算每个子节点相对 T-pose 时的位姿矩阵
     for i in range(24):

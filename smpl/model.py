@@ -12,9 +12,12 @@ class SMPL:
         self.weights = model["weights"]  # joints对顶点的权重
         self.posedirs = model["posedirs"]  # pose对顶点的影响
         self.shapedirs = model["shapedirs"].x  # shape对顶点的影响
-        self.kintree_table = model["kintree_table"]  # 运动学树
         self.J_regressor = model["J_regressor"]  # joints回归器，根据顶点坐标估算joints坐标
         self.faces = model["f"] + 1  # faces的索引，索引从1开始
+
+        kintree_table = model["kintree_table"]  # 运动学树
+        id_to_col = {kintree_table[1, i]: i for i in range(kintree_table.shape[1])}
+        self.kintree_table = {i: id_to_col[kintree_table[0, i]] for i in range(1, kintree_table.shape[1])}  # 关节点之间的父子级关系，0->父，1->子
 
     def __call__(self, shape=None, pose=None, trans=None):
         """
